@@ -8,6 +8,3 @@ Assortment of offline party games
 ### Project Overview
 
 - 100% offline. Meaning no internet connection needed and no build tools needed to plan, just need a browser to open the HTML page(s).
-
-misc change
-asdf
