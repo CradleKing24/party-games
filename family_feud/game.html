@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Family Feud Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b3d91;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 6px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .host-toggle {
+            margin-bottom: 15px;
+            background: #ffd700;
+            color: #000;
+        }
+
+        .board {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #002b5c;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 90px 80px;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .answer-text,
+        .score-text {
+            font-size: 18px;
+            display: none;
+        }
+
+        .reveal-btn {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .revealed .answer-text,
+        .revealed .score-text {
+            display: block;
+        }
+
+        .total {
+            font-size: 28px;
+            margin-top: 20px;
+            background: #ffd700;
+            color: #000;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .full-reset-btn {
+            margin: 5px;
+            background: #dc3545;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Family Feud</h1>
+
+    <button class="host-toggle" onclick="toggleHostMode()">
+        Switch to Game Mode
+    </button>
+
+    <button class="host-toggle" onclick="resetBoard()">Reset Board</button>
+    <button class="full-reset-btn" onclick="fullReset()">Full Reset</button>
+
+
+    <div class="board">
+
+        <!-- Rows -->
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 1">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 2">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 3">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 4">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 5">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 6">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 7">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="row" data-revealed="false">
+            <input type="text" placeholder="Answer 8">
+            <input type="number" min="0" value="0">
+            <button class="reveal-btn" onclick="reveal(this)">Reveal</button>
+
+            <div class="answer-text"></div>
+            <div class="score-text"></div>
+        </div>
+
+        <div class="total">
+            Total: <span id="total">0</span>
+        </div>
+
+    </div>
+
+    <script>
+        let hostMode = true;
+        let totalScore = 0;
+
+        function applyMode() {
+            document.querySelectorAll('.row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                const answerText = row.querySelector('.answer-text');
+                const scoreText = row.querySelector('.score-text');
+
+                if (hostMode) {
+                    inputs.forEach(i => i.classList.remove('hidden'));
+                    answerText.style.display = 'none';
+                    scoreText.style.display = 'none';
+                } else {
+                    answerText.textContent = inputs[0].value;
+                    scoreText.textContent = inputs[1].value;
+                    inputs.forEach(i => i.classList.add('hidden'));
+                }
+            });
+
+            document.querySelector('.host-toggle').textContent =
+                hostMode ? 'Switch to Game Mode' : 'Switch to Host Mode';
+        }
+
+
+        function toggleHostMode() {
+            hostMode = !hostMode;
+            applyMode();
+        }
+
+
+        function reveal(button) {
+            const row = button.closest('.row');
+
+            if (row.dataset.revealed === "true") return;
+
+            const answer = row.querySelector('.answer-text');
+            const score = row.querySelector('.score-text');
+            const points = Number(score.textContent) || 0;
+
+            answer.style.display = 'block';
+            score.style.display = 'block';
+
+            totalScore += points;
+            document.getElementById('total').textContent = totalScore;
+
+            row.dataset.revealed = "true";
+            button.disabled = true;
+        }
+
+        function resetBoard() {
+            totalScore = 0;
+            document.getElementById('total').textContent = '0';
+
+            document.querySelectorAll('.row').forEach(row => {
+                row.dataset.revealed = "false";
+
+                const answerText = row.querySelector('.answer-text');
+                const scoreText = row.querySelector('.score-text');
+                const revealBtn = row.querySelector('.reveal-btn');
+
+                answerText.style.display = 'none';
+                scoreText.style.display = 'none';
+                revealBtn.disabled = false;
+            });
+
+            hostMode = true;
+            applyMode();
+        }
+
+        function fullReset() {
+            totalScore = 0;
+            document.getElementById('total').textContent = '0';
+
+            document.querySelectorAll('.row').forEach(row => {
+                row.dataset.revealed = "false";
+
+                const answerText = row.querySelector('.answer-text');
+                const scoreText = row.querySelector('.score-text');
+                const revealBtn = row.querySelector('.reveal-btn');
+                const inputs = row.querySelectorAll('input');
+
+                // Hide revealed text
+                answerText.style.display = 'none';
+                scoreText.style.display = 'none';
+
+                // Clear inputs
+                inputs[0].value = '';
+                inputs[1].value = '0';
+
+                // Re-enable reveal
+                revealBtn.disabled = false;
+
+                // Show inputs
+                inputs.forEach(i => i.classList.remove('hidden'));
+            });
+
+            // Force Host Mode
+            hostMode = true;
+            applyMode();
+
+        }
+
+    </script>
+
+</body>
+
+</html>
