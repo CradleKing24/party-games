@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Millionaire – New Game Wizard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b3d91;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .wizard {
+            max-width: 600px;
+            margin: auto;
+            background: #002b5c;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
+            font-size: 16px;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 40px;
+            gap: 8px;
+            align-items: center;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="back-button" onclick="window.location.href='game.html'">Exit Game Create (progress will be lost)</button>
+
+    <div class="wizard">
+        <h2 id="stepTitle">Question 1 of 15</h2>
+
+        <label>Question</label>
+        <textarea id="questionInput"></textarea>
+
+        <label>Answers</label>
+        <div id="answersContainer"></div>
+
+        <button id="nextBtn">Next</button>
+    </div>
+
+    <p>
+        After downloading, move the file into:
+        <br><code>/millionaire/games</code>
+    </p>
+
+
+    <script src="js/host_wizard.js"></script>
+</body>
+
+</html>

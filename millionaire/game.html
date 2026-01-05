@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Who Wants to Be a Millionaire</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* MONEY LADDER */
+        .ladder {
+            background: #061539;
+            padding: 20px;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 5px;
+            overflow-y: auto;
+        }
+
+        .ladder button {
+            background: #102a6d;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .ladder button:hover {
+            background: #1c3fa3;
+        }
+
+        .ladder button.active {
+            background: #ffcc00;
+            color: black;
+            font-weight: bold;
+        }
+
+        .ladder button.correct {
+            background: #28a745;
+            color: white;
+        }
+
+        .ladder button.wrong {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* MAIN AREA */
+        .main {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            background: radial-gradient(circle at center, #001f4d, #000);
+        }
+
+        .game-controls {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .game-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        .question {
+            font-size: 28px;
+            margin-bottom: 40px;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 700px;
+        }
+
+        .answer {
+            background: #102a6d;
+            border: 2px solid #3a5edb;
+            padding: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .answer:hover {
+            background: #1c3fa3;
+        }
+
+        .answer.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .answer.correct {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .answer.wrong {
+            background: #dc3545;
+            border-color: #dc3545;
+        }
+
+
+        .placeholder {
+            opacity: 0.5;
+        }
+
+        #resetGameBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .game-controls {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- MONEY LADDER -->
+        <div class="ladder" id="ladder">
+            <button onclick="loadQuestion(0)">$100</button>
+            <button onclick="loadQuestion(1)">$200</button>
+            <button onclick="loadQuestion(2)">$300</button>
+            <button onclick="loadQuestion(3)">$500</button>
+            <button onclick="loadQuestion(4)">$1,000</button>
+            <button onclick="loadQuestion(5)">$2,000</button>
+            <button onclick="loadQuestion(6)">$4,000</button>
+            <button onclick="loadQuestion(7)">$8,000</button>
+            <button onclick="loadQuestion(8)">$16,000</button>
+            <button onclick="loadQuestion(9)">$32,000</button>
+            <button onclick="loadQuestion(10)">$64,000</button>
+            <button onclick="loadQuestion(11)">$125,000</button>
+            <button onclick="loadQuestion(12)">$250,000</button>
+            <button onclick="loadQuestion(13)">$500,000</button>
+            <button onclick="loadQuestion(14)">$1,000,000</button>
+        </div>
+
+        <!-- GAME AREA -->
+        <div class="main">
+            <div class="game-controls">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="menu-btn" onclick="location.href='../main_menu.html'">
+                        Back to Main Menu
+                    </button>
+                    <button onclick="window.location.href='host_wizard.html'">Create New Game</button>
+                    <button onclick="triggerLoad()">Load Game</button>
+                </div>
+                <input type="file" id="gameFileInput" accept=".json" style="display:none"
+                    onchange="loadGameFile(event)">
+            </div>
+
+            <div class="game-content">
+                <div class="question placeholder" id="question">
+                    Select a dollar amount to begin
+                </div>
+
+                <div class="answers">
+                    <div class="answer placeholder" onclick="selectAnswer(0)" id="a"></div>
+                    <div class="answer placeholder" onclick="selectAnswer(1)" id="b"></div>
+                    <div class="answer placeholder" onclick="selectAnswer(2)" id="c"></div>
+                    <div class="answer placeholder" onclick="selectAnswer(3)" id="d"></div>
+                </div>
+
+                <button id="resetGameBtn">Reset Game</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+
+</html>
