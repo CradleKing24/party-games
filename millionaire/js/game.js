@@ -3,6 +3,12 @@ const gameState = Array(15).fill(null);
 
 let gameQuestions = [];
 
+const lifelinesUsed = {
+    phone: false,
+    fifty: false,
+    poll: false
+};
+
 function triggerLoad() {
     document.getElementById('gameFileInput').click();
 }
@@ -149,6 +155,37 @@ function resetGame() {
         el.classList.remove('correct', 'wrong', 'disabled');
         el.classList.add('placeholder');
     });
+
+    // Reset lifelines
+    lifelinesUsed.phone = false;
+    lifelinesUsed.fifty = false;
+    lifelinesUsed.poll = false;
+
+    updateLifelineButtons();
+}
+
+function useLifeline(type) {
+    if (lifelinesUsed[type]) {
+        alert('You have already used this lifeline!');
+        return;
+    }
+
+    if (currentIndex === null) {
+        alert('Please select a question first.');
+        return;
+    }
+
+    lifelinesUsed[type] = true;
+    updateLifelineButtons();
+
+    // Placeholder for actual lifeline logic - can be built out later
+    alert(`${type} lifeline used! (Feature coming soon)`);
+}
+
+function updateLifelineButtons() {
+    document.getElementById('lifelinePhoneBtn').disabled = lifelinesUsed.phone;
+    document.getElementById('lifeline50Btn').disabled = lifelinesUsed.fifty;
+    document.getElementById('lifelinePollBtn').disabled = lifelinesUsed.poll;
 }
 
 document.getElementById('resetGameBtn').addEventListener('click', resetGame);

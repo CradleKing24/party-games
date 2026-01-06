@@ -76,10 +76,18 @@
 
         .game-content {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             flex: 1;
+            gap: 40px;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .question {
@@ -140,6 +148,41 @@
         .game-controls {
             margin-bottom: 15px;
         }
+
+        /* LIFELINES */
+        .lifelines {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 180px;
+        }
+
+        .lifeline-btn {
+            background: #1c3fa3;
+            color: white;
+            border: 2px solid #3a5edb;
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .lifeline-btn:hover:not(:disabled) {
+            background: #2a5cdb;
+            border-color: #4a7eeb;
+            transform: scale(1.05);
+        }
+
+        .lifeline-btn:disabled {
+            background: #555;
+            border-color: #777;
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
     </style>
 </head>
 
@@ -180,18 +223,32 @@
             </div>
 
             <div class="game-content">
-                <div class="question placeholder" id="question">
-                    Select a dollar amount to begin
+                <div class="game-area">
+                    <div class="question placeholder" id="question">
+                        Select a dollar amount to begin
+                    </div>
+
+                    <div class="answers">
+                        <div class="answer placeholder" onclick="selectAnswer(0)" id="a"></div>
+                        <div class="answer placeholder" onclick="selectAnswer(1)" id="b"></div>
+                        <div class="answer placeholder" onclick="selectAnswer(2)" id="c"></div>
+                        <div class="answer placeholder" onclick="selectAnswer(3)" id="d"></div>
+                    </div>
+
+                    <button id="resetGameBtn">Reset Game</button>
                 </div>
 
-                <div class="answers">
-                    <div class="answer placeholder" onclick="selectAnswer(0)" id="a"></div>
-                    <div class="answer placeholder" onclick="selectAnswer(1)" id="b"></div>
-                    <div class="answer placeholder" onclick="selectAnswer(2)" id="c"></div>
-                    <div class="answer placeholder" onclick="selectAnswer(3)" id="d"></div>
+                <div class="lifelines">
+                    <button class="lifeline-btn" id="lifelinePhoneBtn" onclick="useLifeline('phone')">
+                        Phone a Friend
+                    </button>
+                    <button class="lifeline-btn" id="lifeline50Btn" onclick="useLifeline('fifty')">
+                        50/50
+                    </button>
+                    <button class="lifeline-btn" id="lifelinePollBtn" onclick="useLifeline('poll')">
+                        Poll the Audience
+                    </button>
                 </div>
-
-                <button id="resetGameBtn">Reset Game</button>
             </div>
         </div>
 
