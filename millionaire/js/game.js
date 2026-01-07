@@ -9,6 +9,8 @@ const lifelinesUsed = {
     poll: false
 };
 
+const fiftyFiftyDisabled = new Set(); // Track which answer indices are disabled by 50/50
+
 function triggerLoad() {
     document.getElementById('gameFileInput').click();
 }
@@ -84,6 +86,11 @@ function loadQuestion(index) {
         el.textContent = q.answers[i];
         el.classList.remove('placeholder', 'correct', 'wrong', 'disabled');
 
+        // If answer is disabled by 50/50
+        if (fiftyFiftyDisabled.has(i)) {
+            el.classList.add('disabled');
+        }
+
         // If this question has already been answered
         if (state) {
             el.classList.add('disabled');
@@ -105,6 +112,7 @@ function loadQuestion(index) {
 function selectAnswer(answerIndex) {
     if (currentIndex === null) return;
     if (gameState[currentIndex]) return;
+    if (fiftyFiftyDisabled.has(answerIndex)) return;
 
     const correctIndex = gameQuestions[currentIndex]?.correct;
     const isCorrect = answerIndex === correctIndex;
@@ -160,6 +168,7 @@ function resetGame() {
     lifelinesUsed.phone = false;
     lifelinesUsed.fifty = false;
     lifelinesUsed.poll = false;
+    fiftyFiftyDisabled.clear();
 
     updateLifelineButtons();
 }
@@ -176,10 +185,27 @@ function useLifeline(type) {
     }
 
     lifelinesUsed[type] = true;
-    updateLifelineButtons();
 
-    // Placeholder for actual lifeline logic - can be built out later
-    alert(`${type} lifeline used! (Feature coming soon)`);
+    if (type === 'fifty') {
+        applyFiftyFifty();
+    }
+
+    updateLifelineButtons();
+}
+
+function applyFiftyFifty() {
+    const correctIndex = gameQuestions[currentIndex]?.correct;
+    const wrongAnswers = [0, 1, 2, 3].filter(i => i !== correctIndex);
+
+    // Randomly select 2 of the 3 wrong answers to disable
+    const toDisable = wrongAnswers.sort(() => 0.5 - Math.random()).slice(0, 2);
+
+    toDisable.forEach(index => {
+        fiftyFiftyDisabled.add(index);
+    });
+
+    // Reload the current question to show disabled answers
+    loadQuestion(currentIndex);
 }
 
 function updateLifelineButtons() {
